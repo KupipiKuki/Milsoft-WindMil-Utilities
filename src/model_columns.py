@@ -73,3 +73,62 @@ xfmr_columns=start_columns+transformer+end_columnsB
 opendelta=dict({4:'AB',
                 5:'AC',
                 6:'BC'})
+
+switch = ['Status','ID','PartnerID']
+
+skip_sw = [7]+list(range(11,56))+[58]+skipB
+
+sw_columns=start_columns+switch+end_columnsB
+
+node = ['FeederNum','LoadCtlPt','LoadMix','LoadZone','LoadLoc',
+        'LoadGrowth','BillingRef','A_KW','B_KW','C_KW','A_KVAR',
+        'B_KVAR','C_KVAR','A_Cons','B_Cons','C_Cons','Mandatory',
+        'NodeCirLvl','LoadInType','A_Parent','B_Parent','C_Parent',
+        'IsMultiPar','ConsType','FdrColor']
+
+skip_node=[7]+list(range(33,56))+[58]+skipB
+
+node_columns=start_columns+node+end_columnsB
+
+zsm = ['MinDesc','MaxDesc','SubNum','BusVoltage','OH_Zg_MinF','UG_Zg_MinF',
+       'NomVoltage','LoadCtlPt','WyeDelta','RegCode','FdrColor']
+
+skip_zsm=[7,18,19,20,21]+list(range(23,56))+[58]+skipB
+
+zsm_columns=start_columns+zsm+end_columnsB
+
+device = ['A_Desc','B_Desc','C_Desc','A_Closed','B_Closed','C_Closed',
+          'ClsAllPh','LoadCtlPt','IsFdrBay','FdrNum','FdrColor','FdrName']
+
+skip_dev=[7]+list(range(20,56))+[58]+skipB
+
+dev_columns=start_columns+device+end_columnsB
+
+motor = ['Status','HorsePwr','Running_PF','PercentEff',
+         'kV_Rated','DropOutLim','NemaType','StartLimit',
+         'SoftStType','SoftSt_R','SoftSt_X','SoftStTap',
+         'LkdRotPwr','LkdRotMult','AdvModel','AdvCondEq',
+         'AdvInPwr','PerUtil']
+
+generator = ['Model','HoldV_Real','HoldV_Imag','KW_Out','Mx_KW_out','Mx_KVAR_Ld',
+             'Mx_KVAR_Lg','WyeDelta']
+
+mot_gen=['SdyStCond','TrnsCond','SbTrnsCond','Rated_KV','LoadMix',
+         'LoadZone','LoadLoc','LoadGrowth','A_KW','B_KW','C_KW',
+         'A_KVAR','B_KVAR','C_KVAR','A_Cons','B_Cons','C_Cons']
+
+skip_mot=[7]+[25,34,39,42,43]+list(range(48,56))+[58]+skipB
+
+skip_gen=[7]+[28,33]+list(range(35,56))+[58]+skipB
+
+mot_columns=start_columns+mot_gen+motor+end_columnsB
+
+gen_columns=start_columns+mot_gen+generator+end_columnsB
+
+consumers=['LoadMix','LoadZone','LoadGrowth','BillingRef','A_KW',
+           'B_KW','C_KW','A_KVAR','B_KVAR','C_KVAR','A_Cons','B_Cons',
+           'C_Cons','LoadInType','IsActive','ConsType','MeterNum']
+
+skip_cons=[7]+list(range(25,56))+[58]+skipB
+
+cons_columns=start_columns+consumers+end_columnsB
