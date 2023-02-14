@@ -27,6 +27,10 @@ line=['A_Cond','B_Cond','C_Cond','N_Cond','ZLength','Const','LoadMix',
 
 line_columns=start_columns+line+end_columns
 
+skip_all=list(range(7,56))+[58]+skipB
+
+all_columns=start_columns+end_columnsB
+
 capacitor=['A_KVAR','B_KVAR','C_KVAR','VoltRating','SwitchType','SwitchStat',
            'OnSetting','OffSetting','CtlElement','Connection','Total_KVAR',
            'CtlPhase']
