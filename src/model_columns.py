@@ -74,6 +74,10 @@ skip_xfmr=[7,9,12,22,23]+list(range(29,56))+[58]+skipB
 
 xfmr_columns=start_columns+transformer+end_columnsB
 
+xfmr_dtype = {'A_KVA':'float64',
+              'B_KVA':'float64',
+              'C_KVA':'float64'}
+
 opendelta=dict({4:'AB',
                 5:'AC',
                 6:'BC'})
@@ -136,3 +140,43 @@ consumers=['LoadMix','LoadZone','LoadGrowth','BillingRef','A_KW',
 skip_cons=[7]+list(range(25,56))+[58]+skipB
 
 cons_columns=start_columns+consumers+end_columnsB
+
+eq_types_to_wm={'overhead':1,
+                'capacitor':2,
+                'underground':3,
+                'regulator':4,
+                'transformer':5,
+                'switch':6,
+                'node':8,
+                'source':9,
+                'device':10,
+                'motor':11,
+                'generator':12,
+                'consumer':13}
+
+eq_types_from_wm={1:'overhead',
+                  2:'capacitor',
+                  3:'underground',
+                  4:'regulator',
+                  5:'transformer',
+                  6:'switch',
+                  8:'node',
+                  9:'source',
+                  10:'device',
+                  11:'motor',
+                  12:'generator',
+                  13:'consumer'}
+
+eq_format={'overhead':[skip_line,line_columns,dict()],
+           'capacitor':[skip_cap,cap_columns,dict()],
+           'underground':[skip_line,line_columns,dict()],
+           'regulator':[skip_reg,reg_columns,dict()],
+           'transformer':[skip_xfmr,xfmr_columns,xfmr_dtype],
+           'switch':[skip_sw,sw_columns,dict()],
+           'node':[skip_node,node_columns,dict()],
+           'source':[skip_zsm,zsm_columns,dict()],
+           'device':[skip_dev,dev_columns,dict()],
+           'motor':[skip_mot,mot_columns,dict()],
+           'generator':[skip_gen,gen_columns,dict()],
+           'consumer':[skip_cons,cons_columns,dict()],
+           'all':[skip_all,all_columns,dict()]}

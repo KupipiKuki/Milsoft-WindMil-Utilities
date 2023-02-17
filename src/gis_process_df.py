@@ -10,15 +10,25 @@ import geopandas as gpd
 from shapely.geometry import Point, LineString
 import numpy as np
 from pyproj import Transformer
+import model_columns as mc
 
 class process_df:
-    def __init__(self,input_df,category,points_df=None):
+    def __init__(self,input_df,category,points_df=None,dataset=False):
         if type(category) is int:
             self.data_df=input_df.loc[input_df[1]==category].copy()
         elif type(category) is list:
             self.data_df=input_df.loc[input_df[1].isin(category)].copy()
         else:
             raise TypeError("category must be an int or a list, invalid: {0}".format(type(category)))
+        self.dataset=dataset
+        self.data_db=None
+        if self.dataset:
+            self.data_db=dict()
+            if type(category) is list:
+                for cat in category:
+                    self.data_db[mc.eq_types_from_wm[cat]]=input_df.loc[input_df[1]==cat].copy()
+            else:
+                self.data_db[mc.eq_types_from_wm[category]]=self.data_df.copy()#Already did this
         self.pl_data=[]
         self.pl_df=points_df
 
@@ -27,6 +37,13 @@ class process_df:
         self.data_df.columns=columns
         if type(type_adjust) is dict:
             self.data_df=self.data_df.astype(type_adjust)
+    
+    def sort_db(self):
+        for key in self.data_db:
+            self.data_db[key].drop(axis=1,columns=mc.eq_format[key][0],inplace=True)
+            self.data_db[key].columns=mc.eq_format[key][1]
+            if mc.eq_format[key][2]:
+                self.data_db[key]=self.data_db[key].astype(mc.eq_format[key][2])
         
     def crs_adjust(self,from_crs="epsg:3517",to_crs='EPSG:4326',line=False):
         crs_transform = Transformer.from_crs(from_crs,to_crs,always_xy=False)
@@ -85,3 +102,6 @@ class process_df:
             
     def get_df(self):
         return self.data_df
+    
+    def get_data_db(self):
+        return self.data_db
