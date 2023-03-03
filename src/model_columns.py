@@ -179,4 +179,5 @@ eq_format={'overhead':[skip_line,line_columns,dict()],
            'motor':[skip_mot,mot_columns,dict()],
            'generator':[skip_gen,gen_columns,dict()],
            'consumer':[skip_cons,cons_columns,dict()],
-           'all':[skip_all,all_columns,dict()]}
+           'all':[skip_all,all_columns,dict()],
+           'lines':[skip_line,line_columns,dict()]}
