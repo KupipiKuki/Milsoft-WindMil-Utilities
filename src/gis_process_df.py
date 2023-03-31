@@ -90,14 +90,16 @@ class process_df:
         self.export_geo_pd(filepath=filepath,filename=filename)
 
     def sort(self,drop_columns,columns,type_adjust=None):
-        self.data_df.drop(axis=1,columns=drop_columns,inplace=True)
+        if len(drop_columns)>0:
+            self.data_df.drop(axis=1,columns=drop_columns,inplace=True)
         self.data_df.columns=columns
         if type(type_adjust) is dict:
             self.data_df=self.data_df.astype(type_adjust)
     
     def sort_db(self):
         for key in self.data_db:
-            self.data_db[key].drop(axis=1,columns=mc.eq_format[key][0],inplace=True)
+            if len(mc.eq_format[key][0])>0:
+                self.data_db[key].drop(axis=1,columns=mc.eq_format[key][0],inplace=True)
             self.data_db[key].columns=mc.eq_format[key][1]
             if mc.eq_format[key][2]:
                 self.data_db[key]=self.data_db[key].astype(mc.eq_format[key][2])
