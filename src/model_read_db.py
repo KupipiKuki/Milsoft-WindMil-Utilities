@@ -30,10 +30,13 @@ file_prefix_wm={0:['lines',[1,3],True,True,True,True,'sql'],
                 11:['motor',11,False,False,False,True,'csv'],
                 12:['generator',12,False,False,False,True,'csv'],
                 13:['consumer',13,False,False,False,True,'csv'],
+                51:['transformer',5,False,False,False,False,'csv'],#NISC
+                52:['transformer',5,False,False,False,False,'csv'],#Milsoft
                 99:['all',[2,4,5,6,9,10,11,12,13],False,False,False,True,'sql']}
 
 type_col={0:['lines',[1,3]],
           99:['all',[2,4,5,6,9,10,11,12,13]]}
+
 
 print('Read Data')
 
@@ -41,16 +44,7 @@ test=pd.read_csv('Milsoft_Export.std',header=None,skiprows=[0],low_memory=False)
 #mpt=None
 mpt=pd.read_csv('Milsoft_Export.mpt',header=None,skiprows=[0],low_memory=False)
 
-#sub_names=test[61].value_counts()
-#sub_names.sort_index(inplace=True)
-#sub_names.to_csv('subNames.csv')
-#circuit_names=test[63].value_counts()
-#circuit_names.sort_index(inplace=True)
-#circuit_names.to_csv('circuitNames.csv')
-
-
 process_cat=[0,1,2,3,4,5,6,9,10,11,12,13]
-#process_cat=[99]
 
 for proc in process_cat:
     print('Process {} Data'.format(file_prefix_wm[proc][0]))
@@ -60,23 +54,19 @@ for proc in process_cat:
         else:
             pData=gisdf.process_df(test,file_prefix_wm[proc][1],dataset=True,append=file_prefix_wm[proc][3],name=file_prefix_wm[proc][0])
         
-        pData.gen_shape_database(mc.skip_all,
-                                 mc.all_columns,
-                                 filepath=folder_path,
-                                 filename=file_prefix_wm[proc][0]+file_sep+file_suffix+file_type,
-                                 sqlname=file_prefix_wm[proc][0],
-                                 isLine=file_prefix_wm[proc][2],
-                                 db_type=file_prefix_wm[proc][6])
     else:
         if file_prefix_wm[proc][4]:
             pData=gisdf.process_df(test,file_prefix_wm[proc][1],mpt.copy())
         else:
             pData=gisdf.process_df(test,file_prefix_wm[proc][1])
         
-        pData.gen_shape_database(mc.eq_format[file_prefix_wm[proc][0]][0],
-                                 mc.eq_format[file_prefix_wm[proc][0]][1],
-                                 filepath=folder_path,
-                                 filename=file_prefix_wm[proc][0]+file_sep+file_suffix+file_type,
-                                 sqlname=file_prefix_wm[proc][0],
-                                 isLine=file_prefix_wm[proc][2])
+        if proc==51:
+            pData.sort([7,9,12,22,23]+list(range(29,51)),
+                       mc.start_columns+mc.transformer)
+        else:
+            pData.sort([7,9,12,22,23]+list(range(29,64)),
+                       mc.start_columns+mc.transformer)
+        l1=pData.get_df()
+        l=l1.set_index('Name')
+        l.to_csv(folder_path+file_prefix_wm[proc][0]+'.csv')
     print('{} Done'.format(file_prefix_wm[proc][0]))
